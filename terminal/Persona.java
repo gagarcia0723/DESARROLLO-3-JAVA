@@ -3,6 +3,17 @@ public class Persona {
     private String nombre;
     private String apellido;
 
+    Persona(  ){
+
+
+    }
+    Persona( String n, String a ){
+
+        nombre = n;
+        apellido = a;
+
+    }
+
     public void setNombre( String n ){
         nombre = n;
     }
