@@ -21,20 +21,14 @@ public class Facturacion {
 
         System.out.println("\n========================= 0 ");
 
-        System.out.println(empleado.getNombre());
-        System.out.println(empleado.getApellido());
-        System.out.print(empleado.getCargo());
+        System.out.println( empleado.getNombre() );
+        System.out.println( empleado.getApellido() );
+        System.out.print( empleado.getCargo() );
 
         System.out.println("\n========================= 1 ");
 
-        System.out.println(
-            
-            empleado.getNombre() + 
-            " " + 
-            empleado.getApellido()
-            
-        );
-        System.out.print(empleado.getNombreCompleto());
+        System.out.println( empleado.getNombre() + " " + empleado.getApellido() );
+        System.out.print( empleado.getNombreCompleto() );
 
         System.out.println("\n========================= 2 ");
         
@@ -50,7 +44,7 @@ public class Facturacion {
             "Bailarina"
 
         );
-
+        
         System.out.println(empleado2.getNombre());
         System.out.println(empleado2.getApellido());
         System.out.println(empleado2.getCargo());
