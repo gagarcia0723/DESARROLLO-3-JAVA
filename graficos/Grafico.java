@@ -6,7 +6,7 @@ public class Grafico{
 
         JFrame ventana;
         JLabel lblNombre;
-        JTextField tfNombre;
+        
         
         ventana = new JFrame( "Mi ventana ");
         ventana.setSize(300,500);
