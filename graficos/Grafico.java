@@ -2,7 +2,7 @@ import javax.swing.*;
 
 
 public class Grafico{
-    public static void main( String arg[] ){
+    public static void main( String arg[]){
 
         JFrame ventana;
         JLabel lblNombre;
