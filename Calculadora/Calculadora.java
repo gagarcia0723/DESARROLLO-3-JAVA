@@ -75,7 +75,6 @@ public class Calculadora implements ActionListener{
         VENTANA.add(JB_CALCULAR);
         VENTANA.add(JC_SUMA_RESTA);
         
-
         VENTANA.setVisible(true);       
 
     }
