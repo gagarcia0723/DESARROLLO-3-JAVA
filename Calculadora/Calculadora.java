@@ -88,18 +88,11 @@ public class Calculadora implements ActionListener{
             int RESULTADO = Integer.parseInt(TF_NUM1.getText()) + Integer.parseInt(TF_NUM2.getText());
             TF_RESULTADO.setText( Integer.toString(RESULTADO ));
 
-            //JC_SUMA_RESTA.
+           
 
         }
 
-        /* 
-        if( e.getSource() == JB_CALCULAR) {
-
-            int RESULTADO = Integer.parseInt(TF_NUM1.getText()) + Integer.parseInt(TF_NUM2.getText());
-            TF_RESULTADO.setText( Integer.toString(RESULTADO ));
-
-        }
-        */
+        //PENDIENTE AGREGAR LA FUNCION DE RESTA, MULTIPLICACION Y DIVISION.
         
 
     }
