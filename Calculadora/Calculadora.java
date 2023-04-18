@@ -12,7 +12,7 @@ public class Calculadora implements ActionListener{
     JLabel LBL_NUM1, LBL_NUM2, lBL_RES, LBL_NUM3;
     JTextField TF_NUM1, TF_NUM2, TF_RESULTADO;
     JButton JB_CALCULAR;
-    JCheckBox JC_SUMA_RESTA;
+    JCheckBox JC_SUMA_RESTA, JC_MULTI, JC_DIVIC;
 
 
     public static void main(String[] args) {
@@ -55,6 +55,12 @@ public class Calculadora implements ActionListener{
         JC_SUMA_RESTA = new JCheckBox();
         JC_SUMA_RESTA.setBounds(300, 150, 50,50);
         
+        JC_MULTI = new JCheckBox();
+        JC_MULTI.setBounds(300, 150, 50,50);
+        
+        JC_DIVIC = new JCheckBox();
+        JC_DIVIC.setBounds(300, 150, 50,50);
+        
         LBL_NUM3 = new JLabel("RESTAR ");
         LBL_NUM3.setBounds(340,150, 300, 50);
         
@@ -81,18 +87,32 @@ public class Calculadora implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        
 
         if( e.getSource() == JB_CALCULAR ) {
 
-            int RESULTADO = Integer.parseInt(TF_NUM1.getText()) + Integer.parseInt(TF_NUM2.getText());
-            TF_RESULTADO.setText( Integer.toString(RESULTADO ));
+            if( JC_SUMA_RESTA.isSelected() ){
+
+                int RESULTADO = Integer.parseInt(TF_NUM1.getText()) - Integer.parseInt(TF_NUM2.getText());
+                TF_RESULTADO.setText( Integer.toString(RESULTADO ));
+ 
+            } else {
+
+                int RESULTADO = Integer.parseInt(TF_NUM1.getText()) + Integer.parseInt(TF_NUM2.getText());
+                TF_RESULTADO.setText( Integer.toString(RESULTADO ));
+
+            }
+
+            
+
+            
 
            
-
         }
 
-        //PENDIENTE AGREGAR LA FUNCION DE RESTA, MULTIPLICACION Y DIVISION.
+        
+
+        // PENDIENTE AGREGAR LA FUNCION DE RESTA, MULTIPLICACION Y DIVISION.
         
 
     }
