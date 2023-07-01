@@ -8,7 +8,7 @@ public class tableroJuego implements ActionListener {
     int velocidadMovimiento = 10;
 
     int[] posicionBotones = new int[16];
-    JButton[][] casillaTablero = new JButton[4][4];
+    piezas[][] casillaTablero = new piezas[4][4];
     JButton JB_REVOLVER, JB_TMP;
     JTextField TF_CONTADOR;
 
@@ -87,7 +87,7 @@ public class tableroJuego implements ActionListener {
         System.out.println("\n");
     }
 
-    private JButton generarBotones( int index, int texto ){
+    private piezas generarBotones( int index, int texto ){
 
         int row = index / columns;
         int col = index % columns;
@@ -193,11 +193,49 @@ public class tableroJuego implements ActionListener {
             int posicionEVY = casillaTablero[ posicionA[0] ] [ posicionA[1] ].getY();
             int posicionEVX = casillaTablero[ posicionA[0] ] [ posicionA[1] ].getX();
             
+            piezas botonEval1 =  casillaTablero[ posicionA[0] ] [ posicionA[1] ];
+
             //ESTE VALOR ES EL QUE EL USUARIO INTRODUCE
-            int[] posicionB = this.buscarPosicion( Integer.parseInt( JB_TMP.getText() ) );
+            int[] posicionB = this.buscarPosicion( evalValue );
             int posicionBTY = casillaTablero[ posicionB[0] ] [ posicionB[1] ].getY();
             int posicionBTX = casillaTablero[ posicionB[0] ] [ posicionB[1] ].getX();
 
+            piezas botonEval2 =  casillaTablero[ posicionB[0] ] [ posicionB[1] ];
+
+            // SI EL BOTON 16 ESTA A UN LADO, DEL BOTON PRESIONADO
+            // ENTONCES SE CAMBIARAN LAS COORDENADAD DEL 16 CON LAS COORDENADAS DEL BOTON ACTUAL.
+            // ESTO DEBE IR INCREMENTANDO EN UN TIEMPO X
+            // ES DECIR QUE SE DEBE CREAR UNA FUNCI'ON QUE EJECUTE EL INCREMENTO POR CADA CICLO DEL TIMER HASTA DETENERSE
+            // HAY QUE ENTENDER QUE ESTA PIEZA, SE DEBE MOVER CON UN X, Y INCIAL A UN X, Y FINAL.
+            // ESTO DEBE NOTIFICAR QUE HA LLEGADO PARA LIBERAR LOS CONTROLES.
+            // LA DIFERENCIA EN X O Y DE CADA BOTON ES DE 110
+            
+
+            System.out.println( posicionEVX + ", " + posicionEVY);
+            System.out.println( posicionBTX + ", " + posicionBTY);
+
+            Boolean isMovible = 
+                posicionBTX == posicionEVX - 110 && posicionBTY == posicionEVY ? true :
+                posicionBTX == posicionEVX + 110 && posicionBTY == posicionEVY ? true :
+                posicionBTX == posicionEVX && posicionBTY == posicionEVY + 110 ? true :
+                posicionBTX == posicionEVX && posicionBTY == posicionEVY - 110 ? true :
+                false
+            ;
+
+        
+
+            if ( isMovible ){
+                // aqui necesito cambiar en el arreglo: casillaTablero el boton 16 a la posicion del boton presionado
+                // y modificar luego el setbound del mismo mediante la funcion mover boton.
+                casillaTablero[posicionA[0]][posicionA[1]] = botonEval2;
+                casillaTablero[posicionB[0]][posicionB[1]] = botonEval1;
+
+                botonEval2.moverPieza( posicionEVX, posicionEVY, 1);
+                botonEval1.moverPieza( posicionBTX, posicionBTY, 1 );
+
+
+            }
+            
         
         }
         
