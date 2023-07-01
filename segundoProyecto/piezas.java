@@ -2,11 +2,10 @@ import javax.swing.JButton;
 
 public class piezas extends JButton{
 
+    void moverPieza( int finalX, int finalY ){
 
-    piezas(int x, int y, int height, int width, int number ){
-       
-        this.setBounds(x, y, height, width);
-    
+
+
     }
     
     

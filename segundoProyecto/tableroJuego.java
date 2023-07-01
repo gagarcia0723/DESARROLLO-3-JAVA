@@ -32,7 +32,7 @@ public class tableroJuego implements ActionListener {
         public void actionPerformed(ActionEvent e){   
             
             TF_CONTADOR.setText(String.valueOf(Integer.parseInt( TF_CONTADOR.getText()) + 1));
-
+            
         }
     
     });
@@ -60,12 +60,12 @@ public class tableroJuego implements ActionListener {
                 
         }  
 
-    /* 
+    
         for( int numero : posicionBotones ){
             System.out.print( "[" + numero + "]" );
         }
         System.out.println("\n");
-    */
+    
         
 
     }
@@ -79,12 +79,12 @@ public class tableroJuego implements ActionListener {
 
                 casillaTablero[i][j] = generarBotones( k, posicionBotones[k] );
 
-                //System.out.print( j == 3 ? "[" + casillaTablero[i][j].getText() + "]\n" : "[" + casillaTablero[i][j].getText() + "]" );
+                System.out.print( j == 3 ? "[" + casillaTablero[i][j].getText() + "]\n" : "[" + casillaTablero[i][j].getText() + "]" );
                 
                 k++;
             }
         }
-        //System.out.println("\n");
+        System.out.println("\n");
     }
 
     private JButton generarBotones( int index, int texto ){
@@ -95,14 +95,11 @@ public class tableroJuego implements ActionListener {
         int buttonX = margenLateral_x + ( xMargin + col * ( buttonWidth + xMargin ) );
         int buttonY = margenLateral_y + ( yMargin + row * ( buttonHeight + yMargin ) );
 
-        JButton button = new JButton( Integer.toString( texto ) );
-
+        piezas button = new piezas(  );
+        button.setText( Integer.toString(texto) );
         button.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
-        
         button.addActionListener(this);
-
         button.setVisible( buttonCount == 16 ? false:true);
-
         buttonCount++;
 
         return button;
@@ -142,22 +139,23 @@ public class tableroJuego implements ActionListener {
 
     }
 
-    public int[] buscarPosicion( String findMe ){
+    public int[] buscarPosicion( int findMe ){
         int[] posicion = new int[2];
-        
-        //METODO DE BUSQUEDA BINARIA
         
         for (int i = 0; i < casillaTablero.length; i++) {
             for ( int j = 0; j < casillaTablero.length; j++ ) {
-            
-                if ( casillaTablero[i][j].getText() == findMe ) {
+                
+                if ( Integer.parseInt( casillaTablero[i][j].getText() ) == findMe ) {
 
-                    
                     posicion[0] = i;
                     posicion[1] = j;
-                    System.out.println("Valor encontrado en: " + posicion[0] + "," + posicion[1]);
-                }
+
+                    //System.out.println("Valor: " +  findMe + " encontrado en: " + posicion[0] + "," + posicion[1]);
                 
+                }else{
+                    //System.out.println("Valor: " +  findMe + " no encontrado ");
+                }
+            
             }
         }
 
@@ -166,6 +164,9 @@ public class tableroJuego implements ActionListener {
    
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        JB_TMP = new JButton();
+        JB_TMP = (JButton)e.getSource(); 
     
         if( e.getSource() == JB_REVOLVER){
             
@@ -182,10 +183,23 @@ public class tableroJuego implements ActionListener {
 
         }
 
-        JB_TMP = new JButton();
-        JB_TMP = (JButton)e.getSource(); 
+        
+        if ( e.getSource() == JB_TMP ){
+            
+            int evalValue = Integer.parseInt( JB_TMP.getText() );
+            
+            //ESTE VALOR SIEMPRE SE VA A ENCONTRAR
+            int[] posicionA = this.buscarPosicion(16);
+            int posicionEVY = casillaTablero[ posicionA[0] ] [ posicionA[1] ].getY();
+            int posicionEVX = casillaTablero[ posicionA[0] ] [ posicionA[1] ].getX();
+            
+            //ESTE VALOR ES EL QUE EL USUARIO INTRODUCE
+            int[] posicionB = this.buscarPosicion( Integer.parseInt( JB_TMP.getText() ) );
+            int posicionBTY = casillaTablero[ posicionB[0] ] [ posicionB[1] ].getY();
+            int posicionBTX = casillaTablero[ posicionB[0] ] [ posicionB[1] ].getX();
 
-        int[] posicion = this.buscarPosicion( JB_TMP.getText() );
+        
+        }
         
         // PENDIENTE VERIFICAR LOS HERMANOS PARA SABER SI SE PUEDE O NO MOVER.
 
