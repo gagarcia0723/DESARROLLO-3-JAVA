@@ -12,7 +12,8 @@ public class Garcia_158_Proy2  {
 
         tablero.agregarBoton();
         tablero.cargarTablero();
-        tablero.pintarTablero();
+        tablero.pintarMenu();
+        tablero.pintarTablero(false);
     
     }
     

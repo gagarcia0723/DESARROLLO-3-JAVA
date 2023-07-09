@@ -1,50 +1,33 @@
 import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.event.*;
 
 public class piezas extends JButton{
 
-    void moverPieza( int x, int y , int incremento){
-        
-        
-        boolean move = true;
-        int incrementoX = incremento;
-        int incrementoY = incremento;
-        
-        if( this.getX() > x ){
-            incrementoX = incrementoX * -1;
-            System.out.println(incrementoX);
-        }
+    int incrementoX ;
+    int incrementoY ;
 
-        if( this.getY() > y ){
-            incrementoY = incrementoY * -1;
-        }
+    void moverPieza(int x, int y, int incremento) {
 
-        if(this.getY() == y ){
-            incrementoY = 0;
-        }
+        incrementoX = incremento;
+        incrementoY = incremento;
 
-         if(this.getX() == x ){
-            incrementoX = 0;
-        }
-        
-        System.out.println("##" + this.getText() + ": Estoy en X: " + this.getX() + "Y: " + this.getY() +" Me movere a X: " + x + "Y: " + y + "" );  
-        System.out.println("Entrando al ciclo");
-        
-        while( move ){
+        incrementoX = (getX() > x) ? incrementoX * -1 : (getX() == x) ? 0 : incrementoX;
+        incrementoY = (getY() > y) ? incrementoY * -1 : (getY() == y) ? 0 : incrementoY;
 
-            if( this.getX() == x && this.getY() == y){
-                
-                move = false;
-                
-            }else{
-                this.setLocation( this.getX() + incrementoX, this.getY() + incrementoY );
-                
-                this.repaint();
+        Timer timer = new Timer(1, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( getX() != x || getY() != y) {
+                    setLocation(getX() + incrementoX, getY() + incrementoY);
+                    repaint();
+                } else {
+                    ((Timer) e.getSource()).stop();
+                }
             }
-            
-            
-        }
-
-        System.out.println("#" + this.getText() + ": Llegando a X: " + this.getX() + "Y: " + this.getY() );
+        });
         
+        timer.start();
     }
+
 }

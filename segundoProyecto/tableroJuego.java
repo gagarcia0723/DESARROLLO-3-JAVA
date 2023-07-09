@@ -9,12 +9,14 @@ public class tableroJuego implements ActionListener {
 
     int[] posicionBotones = new int[16];
     piezas[][] casillaTablero = new piezas[4][4];
-    JButton JB_REVOLVER, JB_TMP;
-    JTextField TF_CONTADOR;
-
+    JButton JB_REVOLVER, JB_TMP, JB_CONSULTAR, JB_PRUEBA;
+    JTextField TF_CONTADOR, TF_TIMER, TF_NOMBRE;
+    JTextArea JTA_RECORDS, JTA_DETALLES;
+    JLabel JL_NOMBRE;
+    
     JFrame frame = new JFrame("PROYECTO 2 : ROMPECABEZA");
     Random value = new Random();
-    
+
     int posicion = 0;
     int rows = 4; // Número de filas
     int columns = 4; // Número de columnas
@@ -22,16 +24,19 @@ public class tableroJuego implements ActionListener {
     int buttonHeight = 100; // Altura del botón
     int xMargin = 10; // Margen horizontal
     int yMargin = 10; // Margen vertical
-    int margenLateral_x = 500;
+    int margenLateral_x = 600;
     int margenLateral_y = 50;
     int buttonCount = 1;
     int index = 0;
+    int contadorIntentos = 0;
+    boolean juegoIniciado = false;
     
+    gestorArchivos gestosRecords = new gestorArchivos();
     
     Timer timer = new Timer(1000, new ActionListener(){    
         public void actionPerformed(ActionEvent e){   
             
-            TF_CONTADOR.setText(String.valueOf(Integer.parseInt( TF_CONTADOR.getText()) + 1));
+            TF_TIMER.setText(String.valueOf(Integer.parseInt( TF_TIMER.getText()) + 1));
             
         }
     
@@ -58,33 +63,8 @@ public class tableroJuego implements ActionListener {
             posicionBotones[seleccionAleatoria] = posicionBotones[x];
             posicionBotones[x] = temporal;
                 
-        }  
-
-    
-        for( int numero : posicionBotones ){
-            System.out.print( "[" + numero + "]" );
-        }
-        System.out.println("\n");
-    
+        }           
         
-
-    }
-
-    public void cargarTablero(){
-
-        int k = 0;
-        
-        for (int i = 0; i < casillaTablero.length; i++) {
-            for ( int j = 0; j < casillaTablero.length; j++ ) {
-
-                casillaTablero[i][j] = generarBotones( k, posicionBotones[k] );
-
-                System.out.print( j == 3 ? "[" + casillaTablero[i][j].getText() + "]\n" : "[" + casillaTablero[i][j].getText() + "]" );
-                
-                k++;
-            }
-        }
-        System.out.println("\n");
     }
 
     private piezas generarBotones( int index, int texto ){
@@ -106,37 +86,83 @@ public class tableroJuego implements ActionListener {
 
     }
 
-    public void pintarTablero(){
-        
-        
-        
-        
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+    public void cargarTablero(){
+
+        int k = 0;
         
         for (int i = 0; i < casillaTablero.length; i++) {
             for ( int j = 0; j < casillaTablero.length; j++ ) {
+
+                casillaTablero[i][j] = generarBotones( k, posicionBotones[k] );
+                //System.out.print( j == 3 ? "[" + casillaTablero[i][j].getText() + "]\n" : "[" + casillaTablero[i][j].getText() + "]" );
                 
-                frame.add( casillaTablero[i][j] );
-                
+                k++;
             }
         }
+       
+    }
+
+    public void pintarMenu(){
+                
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
         
         JB_REVOLVER = new JButton("INICIAR");
         JB_REVOLVER.setBounds(50, 50, 200, 50);
         JB_REVOLVER.addActionListener(this);
         frame.add(JB_REVOLVER);
+
+        JB_PRUEBA = new JButton("PRUEBA");
+        JB_PRUEBA.setBounds(50, 100, 200, 50);
+        JB_PRUEBA.addActionListener(this);
+        frame.add(JB_PRUEBA);
+
+        TF_TIMER = new JTextField();
+        TF_TIMER.setText(String.valueOf("0"));
+        TF_TIMER.setHorizontalAlignment(SwingConstants.CENTER);
+        TF_TIMER.setBounds(250, 50, 100, 50);
+        frame.add(TF_TIMER);
         
         TF_CONTADOR = new JTextField();
-        TF_CONTADOR.setText("0");
+        TF_CONTADOR.setText(String.valueOf( contadorIntentos ));
         TF_CONTADOR.setHorizontalAlignment(SwingConstants.CENTER);
-        TF_CONTADOR.setBounds(250, 50, 50, 50);
+        TF_CONTADOR.setBounds(350, 50, 100, 50);
         frame.add(TF_CONTADOR);
-        
 
-        frame.setSize(1000 , 600);
+        JL_NOMBRE = new JLabel("NOMBRE DEL PARTICIPANTE");
+        JL_NOMBRE.setBounds(50, 170, 200, 50);
+        frame.add(JL_NOMBRE);
+
+        TF_NOMBRE = new JTextField();
+        TF_NOMBRE.setBounds(50, 220, 200, 50);
+        frame.add(TF_NOMBRE);
+
+        JTA_RECORDS = new JTextArea("");
+        JTA_RECORDS.setBounds(50, 290, 400, 200);
+        JTA_RECORDS.setEditable(false);
+        frame.add(JTA_RECORDS);
+
+        JB_CONSULTAR = new JButton("CONSULTAR");
+        JB_CONSULTAR.setBounds(50, 490, 400, 50);
+        JB_CONSULTAR.addActionListener(this);
+        frame.add(JB_CONSULTAR);
+
+        frame.setSize(1200 , 600);
         frame.setVisible(true);
 
+    }
+
+    public void pintarTablero(boolean isEnable){
+        for (int i = 0; i < casillaTablero.length; i++) {
+            for ( int j = 0; j < casillaTablero.length; j++ ) {
+                casillaTablero[i][j].setEnabled(isEnable);
+                frame.add( casillaTablero[i][j] );
+                
+            }
+        }
+
+        frame.revalidate();
+        frame.repaint();
     }
 
     public int[] buscarPosicion( int findMe ){
@@ -162,30 +188,110 @@ public class tableroJuego implements ActionListener {
         return posicion;
     }
    
+    public void imprimirPosiciones(){
+        
+        
+        
+        for (int i = 0; i < casillaTablero.length; i++) {
+            for ( int j = 0; j < casillaTablero.length; j++ ) {
+
+                System.out.print( j == 3 ? "[" + casillaTablero[i][j].getText() + "]\n" : "[" + casillaTablero[i][j].getText() + "]" );                
+              
+
+            }
+        }
+
+        
+
+    }
+    
+    public Boolean verificarJuego( Boolean juegoIniciado ){
+        
+        int v = 1;
+        
+        Boolean verificado = false;
+
+        for (int i = 0; i < casillaTablero.length && juegoIniciado; i++) {
+            for ( int j = 0; j < casillaTablero.length; j++ ) {
+                
+                int eval = Integer.parseInt( casillaTablero[i][j].getText() );
+                //System.out.println("Valor 1: " + v + " Valor 2: " + eval );
+                
+                if( v == eval ){
+                    //System.out.println( "v1: " + Integer.toString(v) + " = " + casillaTablero[i][j].getText() + ( v == Integer.parseInt( casillaTablero[i][j].getText() )) );
+                    v++;
+                }
+             
+            }
+        }
+
+        
+        if( v == 17 ){
+
+           verificado = true;
+           this.juegoIniciado = false;
+           timer.stop();
+
+        }
+
+        return verificado;
+        
+
+    }
+
+
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         
         JB_TMP = new JButton();
         JB_TMP = (JButton)e.getSource(); 
-    
+        buttonCount = 1;
+
         if( e.getSource() == JB_REVOLVER){
+            System.out.println("Juego iniciado");
             
             timer.start();
-            buttonCount = 1;
             frame.getContentPane().removeAll();
             
-            this.revolverBotones();
-            this.cargarTablero();
-            this.pintarTablero();
-            
+            revolverBotones();
+            cargarTablero();
+            pintarMenu();
+            pintarTablero(true);
+
             frame.revalidate();
             frame.repaint();
 
-        }
+            contadorIntentos = 0;
+            TF_CONTADOR.setText( String.valueOf(contadorIntentos));
+            TF_TIMER.setText("0");
+            juegoIniciado = true;
 
-        
-        if ( e.getSource() == JB_TMP ){
+        }else if( e.getSource() == JB_PRUEBA ){
             
+            timer.start();
+            
+            pintarTablero(true);
+            int[] pos = buscarPosicion(15);
+            casillaTablero[pos[0]][pos[1]].doClick();
+
+            frame.revalidate();
+            frame.repaint();
+
+            contadorIntentos = 0;
+            TF_CONTADOR.setText( String.valueOf(contadorIntentos));
+            TF_TIMER.setText("0");
+            juegoIniciado = true;
+        
+        }else if( e.getSource() == JB_CONSULTAR ){
+            JTA_RECORDS.setText("");
+            //System.out.println( gestosRecords.consultarArchivo() );
+            JTA_RECORDS.setText("\n\n\tNOMBRE\tAPELLIDO\n\n" + gestosRecords.consultarArchivo());
+            
+        
+        }else if( e.getSource() == JB_TMP ){
+
+           
             int evalValue = Integer.parseInt( JB_TMP.getText() );
             
             //ESTE VALOR SIEMPRE SE VA A ENCONTRAR
@@ -202,18 +308,18 @@ public class tableroJuego implements ActionListener {
 
             piezas botonEval2 =  casillaTablero[ posicionB[0] ] [ posicionB[1] ];
 
-            // SI EL BOTON 16 ESTA A UN LADO, DEL BOTON PRESIONADO
-            // ENTONCES SE CAMBIARAN LAS COORDENADAD DEL 16 CON LAS COORDENADAS DEL BOTON ACTUAL.
-            // ESTO DEBE IR INCREMENTANDO EN UN TIEMPO X
-            // ES DECIR QUE SE DEBE CREAR UNA FUNCI'ON QUE EJECUTE EL INCREMENTO POR CADA CICLO DEL TIMER HASTA DETENERSE
-            // HAY QUE ENTENDER QUE ESTA PIEZA, SE DEBE MOVER CON UN X, Y INCIAL A UN X, Y FINAL.
-            // ESTO DEBE NOTIFICAR QUE HA LLEGADO PARA LIBERAR LOS CONTROLES.
-            // LA DIFERENCIA EN X O Y DE CADA BOTON ES DE 110
+            /**  
+             *  NOTA: GENERALES DE FUNCIONAMIENTO
+             * 
+             *  SI EL BOTON 16 ESTA A UN LADO, DEL BOTON PRESIONADO
+            /*  ENTONCES SE CAMBIARAN LAS COORDENADAD DEL 16 CON LAS COORDENADAS DEL BOTON ACTUAL.
+            /*  ESTO DEBE IR INCREMENTANDO EN UN TIEMPO X
+            /*  ES DECIR QUE SE DEBE CREAR UNA FUNCI'ON QUE EJECUTE EL INCREMENTO POR CADA CICLO DEL TIMER HASTA DETENERSE
+            /*  HAY QUE ENTENDER QUE ESTA PIEZA, SE DEBE MOVER CON UN X, Y INCIAL A UN X, Y FINAL.
+            /*  ESTO DEBE NOTIFICAR QUE HA LLEGADO PARA LIBERAR LOS CONTROLES.
+            /*  LA DIFERENCIA EN X O Y DE CADA BOTON ES DE 110
+            **/
             
-
-            System.out.println( posicionEVX + ", " + posicionEVY);
-            System.out.println( posicionBTX + ", " + posicionBTY);
-
             Boolean isMovible = 
                 posicionBTX == posicionEVX - 110 && posicionBTY == posicionEVY ? true :
                 posicionBTX == posicionEVX + 110 && posicionBTY == posicionEVY ? true :
@@ -222,29 +328,38 @@ public class tableroJuego implements ActionListener {
                 false
             ;
 
-        
-
             if ( isMovible ){
-                // aqui necesito cambiar en el arreglo: casillaTablero el boton 16 a la posicion del boton presionado
+                // Aquí necesito cambiar en el arreglo: casillaTablero el boton 16 a la posicion del boton presionado
                 // y modificar luego el setbound del mismo mediante la funcion mover boton.
                 casillaTablero[posicionA[0]][posicionA[1]] = botonEval2;
                 casillaTablero[posicionB[0]][posicionB[1]] = botonEval1;
 
-                botonEval2.moverPieza( posicionEVX, posicionEVY, 1);
+                botonEval2.moverPieza( posicionEVX, posicionEVY, 1 );
                 botonEval1.moverPieza( posicionBTX, posicionBTY, 1 );
+                
+                contadorIntentos += 1;
+                TF_CONTADOR.setText( String.valueOf(contadorIntentos));
+                
+                
+            }
+            
+             Boolean isTerminado = verificarJuego(juegoIniciado);
 
+            if( isTerminado ){
+                
+                gestosRecords.agregarData( TF_NOMBRE.getText(), TF_TIMER.getText() );
+                pintarTablero(false);
+                JTA_RECORDS.setText( "Juego terminado: " + isTerminado + "\n");
+                
+            
+            }else{
+               
+                JTA_RECORDS.setText( "Juego terminado: " + isTerminado + "\n");
 
             }
             
-        
         }
-        
-        // PENDIENTE VERIFICAR LOS HERMANOS PARA SABER SI SE PUEDE O NO MOVER.
-
-
-       
-
-           
+    
     }
-   
+    
 }
